@@ -1,6 +1,6 @@
 # Sistema de Encuestas
 
-## 📌 Descripción
+## Descripción
 
 Sistema web destinado a la creación, publicación y respuesta de encuestas.
 
@@ -10,7 +10,7 @@ respuestas de texto libre.
 
 ---
 
-## 👥 Integrantes
+## Integrantes
 
 - Gonzalo
 - Eugenia
@@ -20,7 +20,7 @@ respuestas de texto libre.
 
 ---
 
-# 📚 Documentación del Proyecto
+# Documentación del Proyecto
 
 Toda la documentación se encuentra organizada dentro de la carpeta `docs/`.
 
@@ -45,6 +45,23 @@ Toda la documentación se encuentra organizada dentro de la carpeta `docs/`.
 - [Modelado de Datos](docs/11-modelado-datos.md)
 - [Diagramas](docs/12-diagramas.md)
 
+### Diagramas
+
+Los diagramas del proyecto se encuentran organizados dentro de la carpeta
+`docs/diagramas/`.
+
+Cada tipo de diagrama cuenta con su propia subcarpeta:
+
+- `docs/diagramas/flujo/` - Diagramas de Flujo
+- `docs/diagramas/dfd/` - Diagramas de Flujo de Datos
+- `docs/diagramas/casos-uso/` - Diagramas de Casos de Uso
+- `docs/diagramas/secuencia/` - Diagramas de Secuencia
+- `docs/diagramas/transicion-estado/` - Diagramas de Transición de Estado
+- `docs/diagramas/actividades/` - Diagramas de Actividades
+- `docs/diagramas/proceso-negocio/` - Modelado del Proceso de Negocios
+
+Cada carpeta contiene los archivos correspondientes al tipo de diagrama.
+
 ## 4. Diseño del Sistema
 
 - [API REST](docs/13-api-rest.md)
@@ -68,18 +85,7 @@ Toda la documentación se encuentra organizada dentro de la carpeta `docs/`.
 
 ---
 
-# 🛠️ Herramientas
-
-- Git
-- GitHub
-- Markdown
-- Mermaid
-- Gherkin
-- Graphviz
-
----
-
-# 📋 Metodología
+# Metodología
 
 El proyecto se organiza mediante una metodología Kanban para visualizar
 las tareas pendientes, en proceso, en revisión y terminadas.
@@ -93,15 +99,8 @@ Además, el desarrollo se plantea mediante cuatro sprints de dos semanas:
 
 ---
 
-# 📊 Estado del Proyecto
 
-El avance y las tareas del proyecto pueden consultarse en:
-
-➡️ [Tablero Kanban](docs/18-kanban.md)
-
----
-
-## 📖 Documentación completa
+## Documentación completa
 
 Para consultar el contenido completo del proyecto, ingresar a la carpeta
-[`docs`](docs/).
+[`docs`](docs/)
