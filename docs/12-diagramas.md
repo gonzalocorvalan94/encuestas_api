@@ -23,3 +23,12 @@ El participante envía sus respuestas al sistema, mientras que la empresa solici
 Archivo fuente:
 
 [Ver diagrama en Graphviz](diagramas/dfd/dfd.dot)
+
+
+---
+
+## Diagrama Entidad-Relación
+
+El siguiente diagrama representa la estructura de datos del sistema de encuestas y las relaciones entre sus entidades.
+
+[Ver código del diagrama Entidad-Relación](diagramas/entidad-relacion/modelo-er.md)
