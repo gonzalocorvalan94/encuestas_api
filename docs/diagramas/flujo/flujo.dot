@@ -1,0 +1,64 @@
+digraph Flujo {
+    rankdir=TB;
+    node [fontname="Arial"];
+
+    inicio [
+        label="INICIO",
+        shape=oval
+    ];
+
+    crear [
+        label="Usuario creador\ncrea la encuesta",
+        shape=box
+    ];
+
+    enlace [
+        label="Sistema genera\nenlace de encuesta",
+        shape=box
+    ];
+
+    participar [
+        label="Participante accede\na la encuesta",
+        shape=box
+    ];
+
+    responder [
+        label="Participante completa\nlas respuestas",
+        shape=box
+    ];
+
+    procesar [
+        label="Sistema procesa\nlas respuestas",
+        shape=box
+    ];
+
+    reporte [
+        label="Empresa solicita\nreporte",
+        shape=box
+    ];
+
+    resultados [
+        label="Sistema genera\nresultados",
+        shape=box
+    ];
+
+    confirmacion [
+        label="Participante recibe\nconfirmación",
+        shape=box
+    ];
+
+    fin [
+        label="FIN",
+        shape=oval
+    ];
+
+    inicio -> crear;
+    crear -> enlace;
+    enlace -> participar;
+    participar -> responder;
+    responder -> procesar;
+    procesar -> reporte;
+    reporte -> resultados;
+    resultados -> confirmacion;
+    confirmacion -> fin;
+}
