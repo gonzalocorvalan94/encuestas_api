@@ -32,3 +32,10 @@ Archivo fuente:
 El siguiente diagrama representa la estructura de datos del sistema de encuestas y las relaciones entre sus entidades.
 
 [Ver código del diagrama Entidad-Relación](diagramas/entidad-relacion/modelo-er.md)
+---
+
+## Diagrama de Transición de Estado (Ciclo de Vida de Encuestas)
+
+El siguiente diagrama representa el ciclo de vida de una encuesta, desde su creación hasta su cierre.
+
+[Ver código del diagrama de Transición de Estado](diagramas/transicion-estado/ciclo-vida-encuestas.md)
