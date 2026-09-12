@@ -1,0 +1,86 @@
+<svg width="202pt" height="440pt" viewBox="0.00 0.00 202.00 440.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 436)">
+<title>GeneracionReportes</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-436 198,-436 198,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_admin</title>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="14,-320 14,-402.4 180,-402.4 180,-320 14,-320"/>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-385.8" font-family="Helvetica,sans-Serif" font-size="14.00">Administrador</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_sistema</title>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="8,-57.6 8,-312 186,-312 186,-57.6 8,-57.6"/>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-295.4" font-family="Helvetica,sans-Serif" font-size="14.00">Sistema</text>
+</g>
+<!-- inicio -->
+<g id="node1" class="node">
+<title>inicio</title>
+<ellipse fill="black" stroke="black" cx="97" cy="-421.2" rx="10.8" ry="10.8"/>
+</g>
+<!-- seleccionar -->
+<g id="node3" class="node">
+<title>seleccionar</title>
+<path fill="#f5f5f5" stroke="black" d="M159.93,-369.6C159.93,-369.6 34.07,-369.6 34.07,-369.6 28.07,-369.6 22.07,-363.6 22.07,-357.6 22.07,-357.6 22.07,-340 22.07,-340 22.07,-334 28.07,-328 34.07,-328 34.07,-328 159.93,-328 159.93,-328 165.93,-328 171.93,-334 171.93,-340 171.93,-340 171.93,-357.6 171.93,-357.6 171.93,-363.6 165.93,-369.6 159.93,-369.6"/>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-353" font-family="Helvetica,sans-Serif" font-size="14.00">Seleccionar encuesta</text>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-336.2" font-family="Helvetica,sans-Serif" font-size="14.00">cerrada</text>
+</g>
+<!-- inicio&#45;&gt;seleccionar -->
+<g id="edge1" class="edge">
+<title>inicio-&gt;seleccionar</title>
+<path fill="none" stroke="black" d="M97,-410.11C97,-402.54 97,-391.74 97,-381.37"/>
+<polygon fill="black" stroke="black" points="100.5,-381.54 97,-371.54 93.5,-381.54 100.5,-381.54"/>
+</g>
+<!-- fin -->
+<g id="node2" class="node">
+<title>fin</title>
+<ellipse fill="black" stroke="black" cx="97" cy="-14.8" rx="10.8" ry="10.8"/>
+<ellipse fill="none" stroke="black" cx="97" cy="-14.8" rx="14.8" ry="14.8"/>
+</g>
+<!-- consultar -->
+<g id="node4" class="node">
+<title>consultar</title>
+<path fill="#f5f5f5" stroke="black" d="M159.14,-279.2C159.14,-279.2 34.86,-279.2 34.86,-279.2 28.86,-279.2 22.86,-273.2 22.86,-267.2 22.86,-267.2 22.86,-249.6 22.86,-249.6 22.86,-243.6 28.86,-237.6 34.86,-237.6 34.86,-237.6 159.14,-237.6 159.14,-237.6 165.14,-237.6 171.14,-243.6 171.14,-249.6 171.14,-249.6 171.14,-267.2 171.14,-267.2 171.14,-273.2 165.14,-279.2 159.14,-279.2"/>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-262.6" font-family="Helvetica,sans-Serif" font-size="14.00">Consultar respuestas</text>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-245.8" font-family="Helvetica,sans-Serif" font-size="14.00">almacenadas</text>
+</g>
+<!-- seleccionar&#45;&gt;consultar -->
+<g id="edge2" class="edge">
+<title>seleccionar-&gt;consultar</title>
+<path fill="none" stroke="black" d="M97,-327.74C97,-316.85 97,-303.15 97,-290.88"/>
+<polygon fill="black" stroke="black" points="100.5,-291.2 97,-281.2 93.5,-291.2 100.5,-291.2"/>
+</g>
+<!-- calcular -->
+<g id="node5" class="node">
+<title>calcular</title>
+<path fill="#f5f5f5" stroke="black" d="M165.77,-201.6C165.77,-201.6 28.23,-201.6 28.23,-201.6 22.23,-201.6 16.23,-195.6 16.23,-189.6 16.23,-189.6 16.23,-155.2 16.23,-155.2 16.23,-149.2 22.23,-143.2 28.23,-143.2 28.23,-143.2 165.77,-143.2 165.77,-143.2 171.77,-143.2 177.77,-149.2 177.77,-155.2 177.77,-155.2 177.77,-189.6 177.77,-189.6 177.77,-195.6 171.77,-201.6 165.77,-201.6"/>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-185" font-family="Helvetica,sans-Serif" font-size="14.00">Calcular por pregunta:</text>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-168.2" font-family="Helvetica,sans-Serif" font-size="14.00">total, conteo por opción</text>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-151.4" font-family="Helvetica,sans-Serif" font-size="14.00">y porcentaje</text>
+</g>
+<!-- consultar&#45;&gt;calcular -->
+<g id="edge3" class="edge">
+<title>consultar-&gt;calcular</title>
+<path fill="none" stroke="black" d="M97,-237.49C97,-230.22 97,-221.72 97,-213.32"/>
+<polygon fill="black" stroke="black" points="100.5,-213.58 97,-203.58 93.5,-213.58 100.5,-213.58"/>
+</g>
+<!-- presentar -->
+<g id="node6" class="node">
+<title>presentar</title>
+<path fill="#f5f5f5" stroke="black" d="M157.59,-107.2C157.59,-107.2 36.41,-107.2 36.41,-107.2 30.41,-107.2 24.41,-101.2 24.41,-95.2 24.41,-95.2 24.41,-77.6 24.41,-77.6 24.41,-71.6 30.41,-65.6 36.41,-65.6 36.41,-65.6 157.59,-65.6 157.59,-65.6 163.59,-65.6 169.59,-71.6 169.59,-77.6 169.59,-77.6 169.59,-95.2 169.59,-95.2 169.59,-101.2 163.59,-107.2 157.59,-107.2"/>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-90.6" font-family="Helvetica,sans-Serif" font-size="14.00">Presentar resultados</text>
+<text xml:space="preserve" text-anchor="middle" x="97" y="-73.8" font-family="Helvetica,sans-Serif" font-size="14.00">(tabla y/o gráfico)</text>
+</g>
+<!-- calcular&#45;&gt;presentar -->
+<g id="edge4" class="edge">
+<title>calcular-&gt;presentar</title>
+<path fill="none" stroke="black" d="M97,-142.96C97,-135.25 97,-126.85 97,-118.98"/>
+<polygon fill="black" stroke="black" points="100.5,-119.1 97,-109.1 93.5,-119.1 100.5,-119.1"/>
+</g>
+<!-- presentar&#45;&gt;fin -->
+<g id="edge5" class="edge">
+<title>presentar-&gt;fin</title>
+<path fill="none" stroke="black" d="M97,-65.27C97,-57.7 97,-48.99 97,-41.01"/>
+<polygon fill="black" stroke="black" points="100.5,-41.22 97,-31.22 93.5,-41.22 100.5,-41.22"/>
+</g>
+</g>
+</svg>

@@ -1,0 +1,131 @@
+<svg width="254pt" height="744pt" viewBox="0.00 0.00 254.00 744.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 739.8)">
+<title>CreacionEncuesta</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-739.8 250,-739.8 250,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_admin</title>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="8,-160 8,-687.2 238,-687.2 238,-160 8,-160"/>
+<text xml:space="preserve" text-anchor="middle" x="123" y="-670.6" font-family="Helvetica,sans-Serif" font-size="14.00">Administrador</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_sistema</title>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="40,-58.6 40,-141 206,-141 206,-58.6 40,-58.6"/>
+<text xml:space="preserve" text-anchor="middle" x="123" y="-124.4" font-family="Helvetica,sans-Serif" font-size="14.00">Sistema</text>
+</g>
+<!-- inicio -->
+<g id="node1" class="node">
+<title>inicio</title>
+<ellipse fill="black" stroke="black" cx="100" cy="-725" rx="10.8" ry="10.8"/>
+</g>
+<!-- seleccionar -->
+<g id="node3" class="node">
+<title>seleccionar</title>
+<path fill="#f5f5f5" stroke="black" d="M169.85,-654.4C169.85,-654.4 30.15,-654.4 30.15,-654.4 24.15,-654.4 18.15,-648.4 18.15,-642.4 18.15,-642.4 18.15,-624.8 18.15,-624.8 18.15,-618.8 24.15,-612.8 30.15,-612.8 30.15,-612.8 169.85,-612.8 169.85,-612.8 175.85,-612.8 181.85,-618.8 181.85,-624.8 181.85,-624.8 181.85,-642.4 181.85,-642.4 181.85,-648.4 175.85,-654.4 169.85,-654.4"/>
+<text xml:space="preserve" text-anchor="middle" x="100" y="-637.8" font-family="Helvetica,sans-Serif" font-size="14.00">Seleccionar</text>
+<text xml:space="preserve" text-anchor="middle" x="100" y="-621" font-family="Helvetica,sans-Serif" font-size="14.00">"Crear nueva encuesta"</text>
+</g>
+<!-- inicio&#45;&gt;seleccionar -->
+<g id="edge1" class="edge">
+<title>inicio-&gt;seleccionar</title>
+<path fill="none" stroke="black" d="M100,-713.74C100,-702.23 100,-682.98 100,-666.34"/>
+<polygon fill="black" stroke="black" points="103.5,-666.36 100,-656.36 96.5,-666.36 103.5,-666.36"/>
+</g>
+<!-- fin -->
+<g id="node2" class="node">
+<title>fin</title>
+<ellipse fill="black" stroke="black" cx="123" cy="-14.8" rx="10.8" ry="10.8"/>
+<ellipse fill="none" stroke="black" cx="123" cy="-14.8" rx="14.8" ry="14.8"/>
+</g>
+<!-- titulo -->
+<g id="node4" class="node">
+<title>titulo</title>
+<path fill="#f5f5f5" stroke="black" d="M140.74,-575.8C140.74,-575.8 59.26,-575.8 59.26,-575.8 53.26,-575.8 47.26,-569.8 47.26,-563.8 47.26,-563.8 47.26,-546.2 47.26,-546.2 47.26,-540.2 53.26,-534.2 59.26,-534.2 59.26,-534.2 140.74,-534.2 140.74,-534.2 146.74,-534.2 152.74,-540.2 152.74,-546.2 152.74,-546.2 152.74,-563.8 152.74,-563.8 152.74,-569.8 146.74,-575.8 140.74,-575.8"/>
+<text xml:space="preserve" text-anchor="middle" x="100" y="-559.2" font-family="Helvetica,sans-Serif" font-size="14.00">Ingresar título</text>
+<text xml:space="preserve" text-anchor="middle" x="100" y="-542.4" font-family="Helvetica,sans-Serif" font-size="14.00">y descripción</text>
+</g>
+<!-- seleccionar&#45;&gt;titulo -->
+<g id="edge2" class="edge">
+<title>seleccionar-&gt;titulo</title>
+<path fill="none" stroke="black" d="M100,-612.47C100,-604.88 100,-596.05 100,-587.66"/>
+<polygon fill="black" stroke="black" points="103.5,-587.77 100,-577.77 96.5,-587.77 103.5,-587.77"/>
+</g>
+<!-- pregunta -->
+<g id="node5" class="node">
+<title>pregunta</title>
+<path fill="#f5f5f5" stroke="black" d="M140.76,-497.2C140.76,-497.2 59.24,-497.2 59.24,-497.2 53.24,-497.2 47.24,-491.2 47.24,-485.2 47.24,-485.2 47.24,-467.6 47.24,-467.6 47.24,-461.6 53.24,-455.6 59.24,-455.6 59.24,-455.6 140.76,-455.6 140.76,-455.6 146.76,-455.6 152.76,-461.6 152.76,-467.6 152.76,-467.6 152.76,-485.2 152.76,-485.2 152.76,-491.2 146.76,-497.2 140.76,-497.2"/>
+<text xml:space="preserve" text-anchor="middle" x="100" y="-480.6" font-family="Helvetica,sans-Serif" font-size="14.00">Ingresar texto</text>
+<text xml:space="preserve" text-anchor="middle" x="100" y="-463.8" font-family="Helvetica,sans-Serif" font-size="14.00">de la pregunta</text>
+</g>
+<!-- titulo&#45;&gt;pregunta -->
+<g id="edge3" class="edge">
+<title>titulo-&gt;pregunta</title>
+<path fill="none" stroke="black" d="M100,-533.87C100,-526.28 100,-517.45 100,-509.06"/>
+<polygon fill="black" stroke="black" points="103.5,-509.17 100,-499.17 96.5,-509.17 103.5,-509.17"/>
+</g>
+<!-- opciones -->
+<g id="node6" class="node">
+<title>opciones</title>
+<path fill="#f5f5f5" stroke="black" d="M158.48,-418.6C158.48,-418.6 29.52,-418.6 29.52,-418.6 23.52,-418.6 17.52,-412.6 17.52,-406.6 17.52,-406.6 17.52,-389 17.52,-389 17.52,-383 23.52,-377 29.52,-377 29.52,-377 158.48,-377 158.48,-377 164.48,-377 170.48,-383 170.48,-389 170.48,-389 170.48,-406.6 170.48,-406.6 170.48,-412.6 164.48,-418.6 158.48,-418.6"/>
+<text xml:space="preserve" text-anchor="middle" x="94" y="-402" font-family="Helvetica,sans-Serif" font-size="14.00">Agregar opciones</text>
+<text xml:space="preserve" text-anchor="middle" x="94" y="-385.2" font-family="Helvetica,sans-Serif" font-size="14.00">de respuesta (mín. 2)</text>
+</g>
+<!-- pregunta&#45;&gt;opciones -->
+<g id="edge4" class="edge">
+<title>pregunta-&gt;opciones</title>
+<path fill="none" stroke="black" d="M98.42,-455.27C97.83,-447.68 97.14,-438.85 96.48,-430.46"/>
+<polygon fill="black" stroke="black" points="99.98,-430.26 95.7,-420.57 93,-430.81 99.98,-430.26"/>
+</g>
+<!-- mas -->
+<g id="node7" class="node">
+<title>mas</title>
+<path fill="#fff2cc" stroke="black" d="M111.81,-335.65C111.81,-335.65 27.12,-302.75 27.12,-302.75 21.52,-300.57 21.52,-296.23 27.12,-294.05 27.12,-294.05 111.81,-261.15 111.81,-261.15 117.41,-258.97 128.59,-258.97 134.19,-261.15 134.19,-261.15 218.88,-294.05 218.88,-294.05 224.48,-296.23 224.48,-300.57 218.88,-302.75 218.88,-302.75 134.19,-335.65 134.19,-335.65 128.59,-337.83 117.41,-337.83 111.81,-335.65"/>
+<text xml:space="preserve" text-anchor="middle" x="123" y="-302.6" font-family="Helvetica,sans-Serif" font-size="14.00">¿Agregar</text>
+<text xml:space="preserve" text-anchor="middle" x="123" y="-285.8" font-family="Helvetica,sans-Serif" font-size="14.00">otra pregunta?</text>
+</g>
+<!-- opciones&#45;&gt;mas -->
+<g id="edge5" class="edge">
+<title>opciones-&gt;mas</title>
+<path fill="none" stroke="black" d="M100.01,-376.62C102.59,-367.93 105.74,-357.38 108.86,-346.9"/>
+<polygon fill="black" stroke="black" points="112.14,-348.12 111.64,-337.54 105.44,-346.13 112.14,-348.12"/>
+</g>
+<!-- mas&#45;&gt;pregunta -->
+<g id="edge6" class="edge">
+<title>mas-&gt;pregunta</title>
+<path fill="none" stroke="black" d="M152.32,-328.58C173.02,-352.88 194.54,-388.28 179,-418.6 172.86,-430.58 162.89,-440.6 152.06,-448.73"/>
+<polygon fill="black" stroke="black" points="150.31,-445.68 144.08,-454.25 154.3,-451.44 150.31,-445.68"/>
+<text xml:space="preserve" text-anchor="middle" x="191.7" y="-393.6" font-family="Helvetica,sans-Serif" font-size="14.00">sí</text>
+</g>
+<!-- publicar -->
+<g id="node8" class="node">
+<title>publicar</title>
+<path fill="#f5f5f5" stroke="black" d="M182.04,-204C182.04,-204 63.96,-204 63.96,-204 57.96,-204 51.96,-198 51.96,-192 51.96,-192 51.96,-180 51.96,-180 51.96,-174 57.96,-168 63.96,-168 63.96,-168 182.04,-168 182.04,-168 188.04,-168 194.04,-174 194.04,-180 194.04,-180 194.04,-192 194.04,-192 194.04,-198 188.04,-204 182.04,-204"/>
+<text xml:space="preserve" text-anchor="middle" x="123" y="-181.8" font-family="Helvetica,sans-Serif" font-size="14.00">Publicar la encuesta</text>
+</g>
+<!-- mas&#45;&gt;publicar -->
+<g id="edge7" class="edge">
+<title>mas-&gt;publicar</title>
+<path fill="none" stroke="black" d="M123,-256.29C123,-242.87 123,-228.25 123,-215.91"/>
+<polygon fill="black" stroke="black" points="126.5,-215.98 123,-205.98 119.5,-215.98 126.5,-215.98"/>
+<text xml:space="preserve" text-anchor="middle" x="130.79" y="-226.2" font-family="Helvetica,sans-Serif" font-size="14.00">no</text>
+</g>
+<!-- enlace -->
+<g id="node9" class="node">
+<title>enlace</title>
+<path fill="#f5f5f5" stroke="black" d="M185.93,-108.2C185.93,-108.2 60.07,-108.2 60.07,-108.2 54.07,-108.2 48.07,-102.2 48.07,-96.2 48.07,-96.2 48.07,-78.6 48.07,-78.6 48.07,-72.6 54.07,-66.6 60.07,-66.6 60.07,-66.6 185.93,-66.6 185.93,-66.6 191.93,-66.6 197.93,-72.6 197.93,-78.6 197.93,-78.6 197.93,-96.2 197.93,-96.2 197.93,-102.2 191.93,-108.2 185.93,-108.2"/>
+<text xml:space="preserve" text-anchor="middle" x="123" y="-91.6" font-family="Helvetica,sans-Serif" font-size="14.00">Generar enlace único</text>
+<text xml:space="preserve" text-anchor="middle" x="123" y="-74.8" font-family="Helvetica,sans-Serif" font-size="14.00">para compartir</text>
+</g>
+<!-- publicar&#45;&gt;enlace -->
+<g id="edge8" class="edge">
+<title>publicar-&gt;enlace</title>
+<path fill="none" stroke="black" d="M123,-167.73C123,-154.5 123,-135.87 123,-120"/>
+<polygon fill="black" stroke="black" points="126.5,-120.04 123,-110.04 119.5,-120.04 126.5,-120.04"/>
+</g>
+<!-- enlace&#45;&gt;fin -->
+<g id="edge9" class="edge">
+<title>enlace-&gt;fin</title>
+<path fill="none" stroke="black" d="M123,-66.36C123,-58.58 123,-49.58 123,-41.34"/>
+<polygon fill="black" stroke="black" points="126.5,-41.57 123,-31.57 119.5,-41.57 126.5,-41.57"/>
+</g>
+</g>
+</svg>
