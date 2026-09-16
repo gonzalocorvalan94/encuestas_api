@@ -54,6 +54,7 @@ Cada tipo de diagrama cuenta con su propia subcarpeta:
 
 - `docs/diagramas/flujo/` - Diagramas de Flujo
 - `docs/diagramas/dfd/` - Diagramas de Flujo de Datos
+- `docs/diagramas/entidad-relacion/` - Diagrama Entidad-Relación
 - `docs/diagramas/casos-uso/` - Diagramas de Casos de Uso
 - `docs/diagramas/secuencia/` - Diagramas de Secuencia
 - `docs/diagramas/transicion-estado/` - Diagramas de Transición de Estado

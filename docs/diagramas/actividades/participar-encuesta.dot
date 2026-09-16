@@ -1,0 +1,33 @@
+digraph ParticipacionEncuesta {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled", fillcolor="#f5f5f5"];
+    edge [fontname="Helvetica"];
+
+    inicio [shape=circle, style=filled, fillcolor=black, label="", width=0.3];
+    fin [shape=doublecircle, style=filled, fillcolor=black, label="", width=0.3];
+
+    subgraph cluster_participante {
+        label="Participante";
+        style=dashed;
+        acceder [label="Acceder al enlace\nde la encuesta"];
+        responder [label="Leer pregunta y\nseleccionar opción"];
+        confirmar [label="Confirmar envío\nde respuestas"];
+    }
+
+    subgraph cluster_sistema {
+        label="Sistema";
+        style=dashed;
+        mostrar [label="Mostrar preguntas\ny opciones"];
+        almacenar [label="Almacenar respuestas\nen base de datos"];
+        confirmacion [label="Confirmar\ncompletitud exitosa"];
+    }
+
+    inicio -> acceder;
+    acceder -> mostrar;
+    mostrar -> responder;
+    responder -> confirmar;
+    confirmar -> almacenar;
+    almacenar -> confirmacion;
+    confirmacion -> fin;
+}
