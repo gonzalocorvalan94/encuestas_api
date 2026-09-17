@@ -10,7 +10,6 @@ servers:
   - url: /api
     description: Servidor principal
 
-# Indica que los endpoints son públicos por defecto
 security: []
 
 paths:
