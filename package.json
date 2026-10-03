@@ -1,0 +1,22 @@
+{
+  "name": "encuesta",
+  "version": "1.0.0",
+  "description": "## Descripción",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "repo.or.cz:isfdt166-ansi-edi2-26-encuestas-doc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
