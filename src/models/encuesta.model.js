@@ -1,40 +1,31 @@
-// Simulación de base de datos en memoria
-const encuestas = [
-  {
-    id: 1,
-    titulo: '¿Cuál es tu lenguaje favorito?',
-    opciones: ['JavaScript', 'Python', 'Java'],
-    votos: [0, 0, 0]
-  }
-];
+const db = require('../config/db');
 
 class EncuestaModel {
   static obtenerTodas() {
-    return encuestas;
+    const stmt = db.prepare('SELECT * FROM encuesta');
+    return stmt.all();
   }
 
   static obtenerPorId(id) {
-    return encuestas.find(e => e.id === parseInt(id));
+    const stmt = db.prepare('SELECT * FROM encuesta WHERE id = ?');
+    return stmt.get(id);
   }
 
   static crear(datos) {
-    const nueva = {
-      id: encuestas.length + 1,
-      titulo: datos.titulo,
-      opciones: datos.opciones,
-      votos: new Array(datos.opciones.length).fill(0)
-    };
-    encuestas.push(nueva);
-    return nueva;
-  }
+    const { titulo, descripcion, estado = 'activa' } = datos;
+    const fechaCreacion = new Date().toISOString();
+    const stmt = db.prepare(
+      'INSERT INTO encuesta (titulo, descripcion, fecha_creacion, estado) VALUES (?, ?, ?, ?)'
+    );
+    const result = stmt.run(titulo, descripcion, fechaCreacion, estado);
 
-  static registrarVoto(idEncuesta, opcionIndice) {
-    const encuesta = this.obtenerPorId(idEncuesta);
-    if (encuesta && encuesta.votos[opcionIndice] !== undefined) {
-      encuesta.votos[opcionIndice] += 1;
-      return encuesta;
-    }
-    return null;
+    return {
+      id: result.lastInsertRowid,
+      titulo,
+      descripcion,
+      fecha_creacion: fechaCreacion,
+      estado,
+    };
   }
 }
 

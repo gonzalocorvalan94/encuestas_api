@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const encuestaController = require('../controllers/encuesta.controller');
 
-router.get('/', encuestaController.getEncuestas);
-router.get('/:id', encuestaController.getEncuestaById);
-router.post('/', encuestaController.createEncuesta);
-router.post('/:id/votar', encuestaController.votarEncuesta);
+// Usamos las funciones a través del objeto importado
+router.get('/', encuestaController.obtenerTodas);
+router.get('/:id', encuestaController.obtenerPorId);
+router.post('/', encuestaController.crear);
 
 module.exports = router;
