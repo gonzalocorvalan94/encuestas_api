@@ -1,6 +1,6 @@
-const EncuestaModel = require('../models/encuesta.model');
+import EncuestaModel from '../models/encuesta.model.js';
 
-exports.obtenerTodas = (req, res) => {
+export const obtenerTodas = (req, res) => {
   try {
     const encuestas = EncuestaModel.obtenerTodas();
     res.json(encuestas);
@@ -9,7 +9,7 @@ exports.obtenerTodas = (req, res) => {
   }
 };
 
-exports.obtenerPorId = (req, res) => {
+export const obtenerPorId = (req, res) => {
   try {
     const encuesta = EncuestaModel.obtenerPorId(req.params.id);
     if (!encuesta) {
@@ -21,7 +21,7 @@ exports.obtenerPorId = (req, res) => {
   }
 };
 
-exports.crear = (req, res) => {
+export const crear = (req, res) => {
   try {
     const { titulo } = req.body;
     if (!titulo) {

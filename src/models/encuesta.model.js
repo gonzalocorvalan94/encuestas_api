@@ -1,4 +1,4 @@
-const db = require('../config/db');
+import db from '../config/db.js';
 
 class EncuestaModel {
   static obtenerTodas() {
@@ -29,4 +29,4 @@ class EncuestaModel {
   }
 }
 
-module.exports = EncuestaModel;
+export default EncuestaModel;
