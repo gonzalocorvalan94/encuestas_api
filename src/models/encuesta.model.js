@@ -73,6 +73,20 @@ export const agregarPregunta = (encuestaId, { enunciado, opciones }) =>
     return { id: preguntaId, enunciado, opciones };
   })();
 
+// Reemplaza el enunciado y todas las opciones. Devuelve undefined si la pregunta no existe en la encuesta
+export const actualizarPregunta = (encuestaId, preguntaId, { enunciado, opciones }) =>
+  db.transaction(() => {
+    const { changes } = db
+      .prepare('UPDATE pregunta SET enunciado = ? WHERE id = ? AND encuesta_id = ?')
+      .run(enunciado, preguntaId, encuestaId);
+    if (changes === 0) return undefined;
+
+    db.prepare('DELETE FROM opcion WHERE pregunta_id = ?').run(preguntaId);
+    const insertar = db.prepare('INSERT INTO opcion (pregunta_id, valor) VALUES (?, ?)');
+    for (const valor of opciones) insertar.run(preguntaId, valor);
+    return { id: preguntaId, enunciado, opciones };
+  })();
+
 export const eliminarPregunta = (encuestaId, preguntaId) =>
   db
     .prepare('DELETE FROM pregunta WHERE id = ? AND encuesta_id = ?')

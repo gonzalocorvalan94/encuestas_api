@@ -10,6 +10,7 @@ router.put('/:id', encuestaController.actualizar);
 router.delete('/:id', encuestaController.eliminar);
 router.patch('/:id/estado', encuestaController.cambiarEstado);
 router.post('/:id/preguntas', encuestaController.agregarPregunta);
+router.put('/:id/preguntas/:preguntaId', encuestaController.actualizarPregunta);
 router.delete('/:id/preguntas/:preguntaId', encuestaController.eliminarPregunta);
 router.post('/:id/respuestas', encuestaController.registrarRespuesta);
 router.get('/:id/resultados', encuestaController.obtenerResultados);

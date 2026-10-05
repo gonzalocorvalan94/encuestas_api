@@ -18,8 +18,7 @@ API REST para crear, publicar, responder y analizar encuestas de **respuesta ún
 8. [Reglas de validación](#reglas-de-validación)
 9. [Manejo de errores](#manejo-de-errores)
 10. [Ejemplo de flujo completo](#ejemplo-de-flujo-completo)
-11. [Tests](#tests)
-12. [Decisiones y limitaciones](#decisiones-y-limitaciones)
+11. [Decisiones y limitaciones](#decisiones-y-limitaciones)
 
 ---
 
@@ -31,6 +30,7 @@ API REST para crear, publicar, responder y analizar encuestas de **respuesta ún
 | Módulos | ESM: el `package.json` debe tener `"type": "module"` |
 | Framework | Express (probado con la v5) |
 | Base de datos | SQLite mediante `better-sqlite3` (API síncrona, sin pool de conexiones) |
+| Validación | `zod` |
 | Otros | `cors` |
 
 `better-sqlite3` incluye binarios precompilados para las plataformas habituales. Si la instalación intenta compilar y falla, usá una versión LTS de Node o instalá las herramientas de compilación de tu sistema operativo.
@@ -38,7 +38,7 @@ API REST para crear, publicar, responder y analizar encuestas de **respuesta ún
 ## Instalación y ejecución
 
 ```bash
-npm install express better-sqlite3 cors
+npm install express better-sqlite3 cors zod
 node app.js
 ```
 
@@ -82,18 +82,18 @@ La aplicación no lee `.env` por sí sola; hay que pasarlo con `--env-file` o us
 .
 ├── app.js                          # Arranque: middlewares, rutas y manejo de errores
 ├── openapi.yaml                    # Contrato de la API
-├── test.mjs                        # Test de punta a punta contra el servidor
 ├── database/
 │   └── schema.sql                  # Definición de tablas
 └── src/
     ├── config/db.js                # Conexión SQLite, pragmas y carga del schema
     ├── routes/encuesta.routes.js   # Mapa de endpoints
-    ├── controllers/encuesta.controller.js  # Validación y respuestas HTTP
+    ├── schemas/encuesta.schema.js  # Validación y limpieza de entradas con zod
+    ├── controllers/encuesta.controller.js  # Reglas de negocio y respuestas HTTP
     ├── models/encuesta.model.js    # Consultas SQL
     └── middlewares/errorHandler.js # crearError, ruta no encontrada y handler global
 ```
 
-Responsabilidades: las **rutas** solo enlazan URL con controlador; el **controlador** valida la entrada, aplica las reglas de negocio y decide el código HTTP; el **modelo** es el único que conoce SQL. Los errores se lanzan con `throw crearError(status, mensaje)` y los captura el handler global.
+Responsabilidades: las **rutas** solo enlazan URL con controlador; los **schemas** (zod) validan y limpian la entrada; el **controlador** aplica las reglas de negocio y decide el código HTTP; el **modelo** es el único que conoce SQL. Los errores se lanzan con `throw crearError(status, mensaje)` y los captura el handler global.
 
 ## Modelo de datos
 
@@ -162,8 +162,8 @@ Qué se puede hacer en cada estado:
 | Operación | borrador | publicada | cerrada |
 |---|:---:|:---:|:---:|
 | Ver listado, detalle y resultados | ✅ | ✅ | ✅ |
-| Modificar título/descripción (`PUT`) | ✅ | ❌ 409 | ❌ 409 |
-| Agregar o eliminar preguntas | ✅ | ❌ 409 | ❌ 409 |
+| Modificar título/descripción (`PUT /encuestas/{id}`) | ✅ | ✅ | ✅ |
+| Agregar, editar o eliminar preguntas | ✅ | ❌ 409 | ❌ 409 |
 | Responder | ❌ 409 | ✅ | ❌ 409 |
 | Cambiar estado | → publicada | → cerrada | ❌ 409 |
 | Eliminar (`DELETE`) | ✅ si no tiene respuestas | ✅ si no tiene respuestas | ✅ si no tiene respuestas |
@@ -181,6 +181,7 @@ Qué se puede hacer en cada estado:
 | `DELETE` | `/encuestas/{id}` | Eliminar encuesta sin respuestas | 204 |
 | `PATCH` | `/encuestas/{id}/estado` | Publicar o cerrar | 200 |
 | `POST` | `/encuestas/{id}/preguntas` | Agregar pregunta | 201 |
+| `PUT` | `/encuestas/{id}/preguntas/{preguntaId}` | Editar pregunta (enunciado y opciones) | 200 |
 | `DELETE` | `/encuestas/{id}/preguntas/{preguntaId}` | Eliminar pregunta | 204 |
 | `POST` | `/encuestas/{id}/respuestas` | Registrar las respuestas de un participante | 201 |
 | `GET` | `/encuestas/{id}/resultados` | Resultados consolidados | 200 |
@@ -241,9 +242,9 @@ Errores: `400` (id inválido), `404`.
 
 ### `PUT /encuestas/{id}`
 
-Reemplaza `titulo` y `descripcion` (si se omite `descripcion`, queda en `null`). Mismo cuerpo que el alta. Respuesta `200` con el detalle actualizado.
+Reemplaza `titulo` y `descripcion` (si se omite `descripcion`, queda en `null`). Mismo cuerpo que el alta. Respuesta `200` con el detalle actualizado. Funciona en cualquier estado, porque no afecta a las preguntas ni a los resultados.
 
-Errores: `400`, `404`, `409` (la encuesta no está en borrador).
+Errores: `400`, `404`.
 
 ### `DELETE /encuestas/{id}`
 
@@ -277,13 +278,23 @@ La pregunta y sus opciones se guardan en una transacción: o se crean todas o ni
 
 Errores: `400`, `404`, `409` (la encuesta no está en borrador).
 
+### `PUT /encuestas/{id}/preguntas/{preguntaId}`
+
+Edita una pregunta: **reemplaza** el enunciado y todas las opciones. Mismo cuerpo que el alta:
+
+```json
+{ "enunciado": "Como calificarias la atencion", "opciones": ["Mala", "Buena", "Excelente"] }
+```
+
+Respuesta `200` con la pregunta actualizada (`{ id, enunciado, opciones }`). Solo se permite en borrador: una vez publicada, hay votos que apuntan a las opciones y cambiarlas falsearía los resultados. Se guarda en una transacción.
+
+Errores: `400`, `404` (la encuesta no existe, o la pregunta no pertenece a ella), `409` (la encuesta no está en borrador).
+
 ### `DELETE /encuestas/{id}/preguntas/{preguntaId}`
 
 Respuesta `204` sin cuerpo. Elimina la pregunta y sus opciones.
 
 Errores: `400`, `404` (la encuesta no existe, o la pregunta no pertenece a ella), `409` (la encuesta no está en borrador).
-
-No existe un `PUT` de preguntas: para corregir una, se elimina y se vuelve a crear.
 
 ### `POST /encuestas/{id}/respuestas`
 
@@ -344,13 +355,15 @@ Errores: `400`, `404`.
 | `participanteId` | Texto no vacío |
 | `respuestas` | Lista no vacía de `{ preguntaId, valor }`; `preguntaId` entero y `valor` texto |
 
+Estas reglas se definen con [zod](https://zod.dev) en `src/schemas/encuesta.schema.js`. Además de validar, el schema recorta los espacios y descarta los campos desconocidos del cuerpo.
+
 Reglas adicionales al responder:
 
 - `valor` debe coincidir **exactamente** con una opción de esa pregunta, y la pregunta debe pertenecer a la encuesta (distingue mayúsculas y minúsculas; se recortan los espacios de los extremos).
 - Una misma `preguntaId` no puede aparecer dos veces (una sola opción por pregunta).
 - No es obligatorio responder todas las preguntas. Si un participante omite alguna, los porcentajes de esa pregunta suman menos de 100, porque el divisor es el total de participantes.
 
-Orden de evaluación: primero el formato (400), luego que la encuesta exista (404) y después el estado y los conflictos (409). En `POST /respuestas`, la validez de las opciones (400) se revisa **después** de comprobar el estado de la encuesta y si el participante ya respondió.
+Orden de evaluación: primero el formato de los ids y del cuerpo (400, lo resuelve zod), luego que la encuesta exista (404) y después el estado y los conflictos (409). En `POST /respuestas`, que cada `valor` sea una opción válida de la pregunta (400) se revisa **después** de comprobar el estado de la encuesta y si el participante ya respondió, porque requiere consultar la base.
 
 ## Manejo de errores
 
@@ -402,23 +415,6 @@ curl -X PATCH $BASE/1/estado -H "$JSON" -d '{"estado":"cerrada"}'
 
 En Windows PowerShell conviene usar `curl.exe` (o `Invoke-RestMethod`) y escapar las comillas del JSON, o directamente probar con Postman/Insomnia importando `openapi.yaml`.
 
-## Tests
-
-`test.mjs` ejecuta 53 chequeos de punta a punta contra un servidor real: casos válidos, cada código de error (400, 404, 409), las transiciones de estado, la atomicidad al responder, el borrado en cascada, los resultados y CORS. También comprueba que la propia base rechace guardar dos opciones para la misma pregunta.
-
-El test asume una base **vacía** y usa su propia variable `DB_PATH`, así que no toca tus datos. En dos terminales:
-
-```bash
-# Terminal 1: servidor con base descartable
-rm -f database/test.db*
-PORT=3111 DB_PATH=database/test.db node app.js
-
-# Terminal 2: tests
-PORT=3111 DB_PATH=database/test.db node test.mjs
-```
-
-Termina con `53 OK, 0 FAIL` y código de salida 0 si todo está bien. En PowerShell, definí las variables con `$env:PORT=3111; $env:DB_PATH='database/test.db'` en cada terminal y borrá los archivos `test.db*` a mano.
-
 ## Decisiones y limitaciones
 
 - **Solo respuesta única.** No hay preguntas de selección múltiple ni de texto libre: toda pregunta se responde con una sola opción de una lista cerrada.
@@ -426,5 +422,5 @@ Termina con `53 OK, 0 FAIL` y código de salida 0 si todo está bien. En PowerSh
 - **CORS abierto** (`Access-Control-Allow-Origin: *`) para facilitar el consumo desde un frontend. En producción, restringilo en `app.js` con `cors({ origin: '...' })`.
 - **Una sola instancia.** SQLite es un archivo local; no está pensado para varias réplicas del servidor escribiendo a la vez.
 - **Sin paginación** en el listado de encuestas.
-- **Las preguntas no se editan:** se eliminan y se recrean (solo en borrador).
+- **Preguntas y opciones solo se editan en borrador:** una vez publicada la encuesta hay votos que apuntan a las opciones, y cambiarlas falsearía los resultados. El título y la descripción sí se pueden editar siempre.
 - **Operaciones síncronas.** `better-sqlite3` bloquea el event loop durante cada consulta; para este volumen de datos las consultas tardan microsegundos.

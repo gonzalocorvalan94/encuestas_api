@@ -1,18 +1,16 @@
 import * as Encuesta from '../models/encuesta.model.js';
 import { crearError } from '../middlewares/errorHandler.js';
+import {
+  validar,
+  paramsEncuesta,
+  paramsPregunta,
+  encuestaSchema,
+  estadoSchema,
+  preguntaSchema,
+  respuestaSchema,
+} from '../schemas/encuesta.schema.js';
 
-const TRANSICIONES = { borrador: 'publicada', publicada: 'cerrada' };
-const ESTADOS_DESTINO = Object.values(TRANSICIONES);
-
-const esTexto = (v) => typeof v === 'string' && v.trim() !== '';
-
-const parseId = (valor, nombre = 'id') => {
-  const id = Number(valor);
-  if (!Number.isInteger(id) || id < 1) {
-    throw crearError(400, `El ${nombre} debe ser un entero positivo.`);
-  }
-  return id;
-};
+const SIGUIENTE_ESTADO = { borrador: 'publicada', publicada: 'cerrada' };
 
 const exigirEncuesta = (id) => {
   const estado = Encuesta.obtenerEstado(id);
@@ -21,40 +19,36 @@ const exigirEncuesta = (id) => {
   return estado;
 };
 
-const validarEncuesta = ({ titulo, descripcion } = {}) => {
-  if (!esTexto(titulo))
-    throw crearError(400, 'El campo titulo es obligatorio.');
-  if (descripcion != null && typeof descripcion !== 'string') {
-    throw crearError(400, 'El campo descripcion debe ser texto.');
-  }
-  return { titulo: titulo.trim(), descripcion: descripcion?.trim() ?? null };
-};
+const preguntaNoEncontrada = (id, preguntaId) =>
+  crearError(
+    404,
+    `La pregunta con id ${preguntaId} no fue encontrada en la encuesta ${id}.`
+  );
 
 export const obtenerTodas = (req, res) => {
   res.json(Encuesta.obtenerTodas());
 };
 
 export const obtenerPorId = (req, res) => {
-  const id = parseId(req.params.id);
+  const { id } = validar(paramsEncuesta, req.params);
   exigirEncuesta(id);
   res.json(Encuesta.obtenerPorId(id));
 };
 
 export const crear = (req, res) => {
-  res.status(201).json(Encuesta.crear(validarEncuesta(req.body)));
+  const datos = validar(encuestaSchema, req.body);
+  res.status(201).json(Encuesta.crear(datos));
 };
 
 export const actualizar = (req, res) => {
-  const id = parseId(req.params.id);
-  const datos = validarEncuesta(req.body);
-  if (exigirEncuesta(id) !== 'borrador') {
-    throw crearError(409, 'Solo se pueden modificar encuestas en borrador.');
-  }
+  const { id } = validar(paramsEncuesta, req.params);
+  const datos = validar(encuestaSchema, req.body);
+  exigirEncuesta(id);
   res.json(Encuesta.actualizar(id, datos));
 };
 
 export const eliminar = (req, res) => {
-  const id = parseId(req.params.id);
+  const { id } = validar(paramsEncuesta, req.params);
   exigirEncuesta(id);
   if (Encuesta.tieneRespuestas(id)) {
     throw crearError(
@@ -67,16 +61,10 @@ export const eliminar = (req, res) => {
 };
 
 export const cambiarEstado = (req, res) => {
-  const id = parseId(req.params.id);
-  const { estado } = req.body ?? {};
-  if (!ESTADOS_DESTINO.includes(estado)) {
-    throw crearError(
-      400,
-      `El campo estado debe ser uno de: ${ESTADOS_DESTINO.join(', ')}.`
-    );
-  }
+  const { id } = validar(paramsEncuesta, req.params);
+  const { estado } = validar(estadoSchema, req.body);
   const actual = exigirEncuesta(id);
-  if (TRANSICIONES[actual] !== estado) {
+  if (SIGUIENTE_ESTADO[actual] !== estado) {
     throw crearError(409, `No se puede pasar de ${actual} a ${estado}.`);
   }
   if (estado === 'publicada' && Encuesta.contarPreguntas(id) === 0) {
@@ -86,91 +74,57 @@ export const cambiarEstado = (req, res) => {
 };
 
 export const agregarPregunta = (req, res) => {
-  const id = parseId(req.params.id);
-  const { enunciado, opciones } = req.body ?? {};
-
-  if (!esTexto(enunciado))
-    throw crearError(400, 'El campo enunciado es obligatorio.');
-  if (
-    !Array.isArray(opciones) ||
-    opciones.length < 2 ||
-    !opciones.every(esTexto)
-  ) {
-    throw crearError(
-      400,
-      'El campo opciones debe ser una lista de al menos 2 textos no vacios.'
-    );
-  }
-  const limpias = opciones.map((o) => o.trim());
-  if (new Set(limpias).size !== limpias.length) {
-    throw crearError(400, 'Las opciones no pueden repetirse.');
-  }
-
+  const { id } = validar(paramsEncuesta, req.params);
+  const datos = validar(preguntaSchema, req.body);
   if (exigirEncuesta(id) !== 'borrador') {
     throw crearError(
       409,
       'No se pueden modificar preguntas de una encuesta que ya esta publicada.'
     );
   }
-  const pregunta = Encuesta.agregarPregunta(id, {
-    enunciado: enunciado.trim(),
-    opciones: limpias,
-  });
-  res.status(201).json(pregunta);
+  res.status(201).json(Encuesta.agregarPregunta(id, datos));
+};
+
+export const actualizarPregunta = (req, res) => {
+  const { id, preguntaId } = validar(paramsPregunta, req.params);
+  const datos = validar(preguntaSchema, req.body);
+  if (exigirEncuesta(id) !== 'borrador') {
+    throw crearError(
+      409,
+      'Solo se pueden editar preguntas de encuestas en borrador.'
+    );
+  }
+  const pregunta = Encuesta.actualizarPregunta(id, preguntaId, datos);
+  if (!pregunta) throw preguntaNoEncontrada(id, preguntaId);
+  res.json(pregunta);
 };
 
 export const eliminarPregunta = (req, res) => {
-  const id = parseId(req.params.id);
-  const preguntaId = parseId(req.params.preguntaId, 'preguntaId');
+  const { id, preguntaId } = validar(paramsPregunta, req.params);
   if (exigirEncuesta(id) !== 'borrador') {
     throw crearError(
       409,
       'Solo se pueden eliminar preguntas de encuestas en borrador.'
     );
   }
-  if (!Encuesta.eliminarPregunta(id, preguntaId)) {
-    throw crearError(
-      404,
-      `La pregunta con id ${preguntaId} no fue encontrada en la encuesta ${id}.`
-    );
-  }
+  if (!Encuesta.eliminarPregunta(id, preguntaId))
+    throw preguntaNoEncontrada(id, preguntaId);
   res.status(204).end();
 };
 
 export const registrarRespuesta = (req, res) => {
-  const id = parseId(req.params.id);
-  const { participanteId, respuestas } = req.body ?? {};
+  const { id } = validar(paramsEncuesta, req.params);
+  const { participanteId, respuestas } = validar(respuestaSchema, req.body);
 
-  if (!esTexto(participanteId))
-    throw crearError(400, 'El campo participanteId es obligatorio.');
-  if (!Array.isArray(respuestas) || respuestas.length === 0) {
-    throw crearError(400, 'El campo respuestas debe ser una lista no vacia.');
-  }
   if (exigirEncuesta(id) !== 'publicada') {
     throw crearError(409, 'Solo se pueden responder encuestas publicadas.');
   }
-  const participante = participanteId.trim();
-  if (Encuesta.existeParticipante(id, participante)) {
+  if (Encuesta.existeParticipante(id, participanteId)) {
     throw crearError(409, 'Este participante ya respondio la encuesta.');
   }
 
-  const respondidas = new Set();
-  const detalles = respuestas.map((item) => {
-    const { preguntaId, valor } = item ?? {};
-    if (!Number.isInteger(preguntaId) || !esTexto(valor)) {
-      throw crearError(
-        400,
-        'Cada respuesta requiere preguntaId (entero) y valor (texto).'
-      );
-    }
-    if (respondidas.has(preguntaId)) {
-      throw crearError(
-        400,
-        `La pregunta ${preguntaId} admite una sola opcion.`
-      );
-    }
-    respondidas.add(preguntaId);
-    const opcion = Encuesta.buscarOpcion(id, preguntaId, valor.trim());
+  const detalles = respuestas.map(({ preguntaId, valor }) => {
+    const opcion = Encuesta.buscarOpcion(id, preguntaId, valor);
     if (!opcion) {
       throw crearError(
         400,
@@ -180,12 +134,12 @@ export const registrarRespuesta = (req, res) => {
     return { preguntaId, opcionId: opcion.id };
   });
 
-  Encuesta.registrarRespuesta(id, participante, detalles);
+  Encuesta.registrarRespuesta(id, participanteId, detalles);
   res.status(201).end();
 };
 
 export const obtenerResultados = (req, res) => {
-  const id = parseId(req.params.id);
+  const { id } = validar(paramsEncuesta, req.params);
   exigirEncuesta(id);
   res.json(Encuesta.obtenerResultados(id));
 };
