@@ -4,8 +4,8 @@ export const crearError = (status, mensaje) => {
   return error;
 };
 
-export const noEncontrada = (req, res) => {
-  res.status(404).json({ mensaje: 'Ruta no encontrada' });
+export const noEncontrada = (req, res, next) => {
+  next(crearError(404, 'Ruta no encontrada'));
 };
 
 export const manejarErrores = (err, req, res, next) => {
