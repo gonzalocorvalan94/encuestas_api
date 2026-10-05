@@ -14,5 +14,5 @@ app.use(noEncontrada);
 app.use(manejarErrores);
 
 app.listen(PORT, () => {
-  console.log(`Servidor MVC ejecutándose en http://localhost:${PORT}`);
+  console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
 });
