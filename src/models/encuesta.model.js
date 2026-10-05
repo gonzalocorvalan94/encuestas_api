@@ -12,6 +12,9 @@ const preguntasDe = (encuestaId) => {
   const preguntas = db
     .prepare('SELECT id, enunciado FROM pregunta WHERE encuesta_id = ? ORDER BY id')
     .all(encuestaId);
+
+  if (preguntas.length === 0) return [];
+
   const opciones = db
     .prepare(
       `SELECT o.pregunta_id, o.valor FROM opcion o
@@ -19,9 +22,16 @@ const preguntasDe = (encuestaId) => {
        WHERE p.encuesta_id = ? ORDER BY o.id`
     )
     .all(encuestaId);
+
+  const mapaOpciones = new Map();
+  for (const o of opciones) {
+    if (!mapaOpciones.has(o.pregunta_id)) mapaOpciones.set(o.pregunta_id, []);
+    mapaOpciones.get(o.pregunta_id).push(o.valor);
+  }
+
   return preguntas.map((p) => ({
     ...p,
-    opciones: opciones.filter((o) => o.pregunta_id === p.id).map((o) => o.valor),
+    opciones: mapaOpciones.get(p.id) ?? [],
   }));
 };
 
@@ -73,7 +83,6 @@ export const agregarPregunta = (encuestaId, { enunciado, opciones }) =>
     return { id: preguntaId, enunciado, opciones };
   })();
 
-// Reemplaza el enunciado y todas las opciones. Devuelve undefined si la pregunta no existe en la encuesta
 export const actualizarPregunta = (encuestaId, preguntaId, { enunciado, opciones }) =>
   db.transaction(() => {
     const { changes } = db
@@ -92,15 +101,30 @@ export const eliminarPregunta = (encuestaId, preguntaId) =>
     .prepare('DELETE FROM pregunta WHERE id = ? AND encuesta_id = ?')
     .run(preguntaId, encuestaId).changes > 0;
 
-// Devuelve { id } de la opción, o undefined si no pertenece a esa pregunta/encuesta
-export const buscarOpcion = (encuestaId, preguntaId, valor) =>
-  db
+// Clave de una opción dentro del mapa: "preguntaId:valor"
+const claveOpcion = (preguntaId, valor) => `${preguntaId}:${valor}`;
+
+// Devuelve un Map con todas las opciones de la encuesta (clave -> id de la opción)
+export const obtenerMapaOpciones = (encuestaId) => {
+  const filas = db
     .prepare(
-      `SELECT o.id FROM opcion o
+      `SELECT o.id, o.pregunta_id, o.valor
+       FROM opcion o
        JOIN pregunta p ON p.id = o.pregunta_id
-       WHERE p.encuesta_id = ? AND p.id = ? AND o.valor = ?`
+       WHERE p.encuesta_id = ?`
     )
-    .get(encuestaId, preguntaId, valor);
+    .all(encuestaId);
+
+  const mapa = new Map();
+  for (const f of filas) {
+    mapa.set(claveOpcion(f.pregunta_id, f.valor), f.id);
+  }
+  return mapa;
+};
+
+// Devuelve el id de la opción, o undefined si no pertenece a esa pregunta
+export const buscarOpcionId = (mapa, preguntaId, valor) =>
+  mapa.get(claveOpcion(preguntaId, valor));
 
 export const existeParticipante = (encuestaId, participanteId) =>
   db

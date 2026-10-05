@@ -14,9 +14,16 @@ const SIGUIENTE_ESTADO = { borrador: 'publicada', publicada: 'cerrada' };
 
 const exigirEncuesta = (id) => {
   const estado = Encuesta.obtenerEstado(id);
-  if (!estado)
+  if (!estado) {
     throw crearError(404, `La encuesta con id ${id} no fue encontrada.`);
+  }
   return estado;
+};
+
+const exigirEstado = (id, estadoEsperado, mensaje) => {
+  if (exigirEncuesta(id) !== estadoEsperado) {
+    throw crearError(409, mensaje);
+  }
 };
 
 const preguntaNoEncontrada = (id, preguntaId) =>
@@ -76,24 +83,22 @@ export const cambiarEstado = (req, res) => {
 export const agregarPregunta = (req, res) => {
   const { id } = validar(paramsEncuesta, req.params);
   const datos = validar(preguntaSchema, req.body);
-  if (exigirEncuesta(id) !== 'borrador') {
-    throw crearError(
-      409,
-      'No se pueden modificar preguntas de una encuesta que ya esta publicada.'
-    );
-  }
+  exigirEstado(
+    id,
+    'borrador',
+    'No se pueden modificar preguntas de una encuesta que ya esta publicada.'
+  );
   res.status(201).json(Encuesta.agregarPregunta(id, datos));
 };
 
 export const actualizarPregunta = (req, res) => {
   const { id, preguntaId } = validar(paramsPregunta, req.params);
   const datos = validar(preguntaSchema, req.body);
-  if (exigirEncuesta(id) !== 'borrador') {
-    throw crearError(
-      409,
-      'Solo se pueden editar preguntas de encuestas en borrador.'
-    );
-  }
+  exigirEstado(
+    id,
+    'borrador',
+    'Solo se pueden editar preguntas de encuestas en borrador.'
+  );
   const pregunta = Encuesta.actualizarPregunta(id, preguntaId, datos);
   if (!pregunta) throw preguntaNoEncontrada(id, preguntaId);
   res.json(pregunta);
@@ -101,14 +106,14 @@ export const actualizarPregunta = (req, res) => {
 
 export const eliminarPregunta = (req, res) => {
   const { id, preguntaId } = validar(paramsPregunta, req.params);
-  if (exigirEncuesta(id) !== 'borrador') {
-    throw crearError(
-      409,
-      'Solo se pueden eliminar preguntas de encuestas en borrador.'
-    );
-  }
-  if (!Encuesta.eliminarPregunta(id, preguntaId))
+  exigirEstado(
+    id,
+    'borrador',
+    'Solo se pueden eliminar preguntas de encuestas en borrador.'
+  );
+  if (!Encuesta.eliminarPregunta(id, preguntaId)) {
     throw preguntaNoEncontrada(id, preguntaId);
+  }
   res.status(204).end();
 };
 
@@ -116,22 +121,28 @@ export const registrarRespuesta = (req, res) => {
   const { id } = validar(paramsEncuesta, req.params);
   const { participanteId, respuestas } = validar(respuestaSchema, req.body);
 
-  if (exigirEncuesta(id) !== 'publicada') {
-    throw crearError(409, 'Solo se pueden responder encuestas publicadas.');
-  }
+  exigirEstado(
+    id,
+    'publicada',
+    'Solo se pueden responder encuestas publicadas.'
+  );
+
   if (Encuesta.existeParticipante(id, participanteId)) {
     throw crearError(409, 'Este participante ya respondio la encuesta.');
   }
 
+  // Una sola consulta con todas las opciones de la encuesta
+  const mapaOpciones = Encuesta.obtenerMapaOpciones(id);
+
   const detalles = respuestas.map(({ preguntaId, valor }) => {
-    const opcion = Encuesta.buscarOpcion(id, preguntaId, valor);
-    if (!opcion) {
+    const opcionId = Encuesta.buscarOpcionId(mapaOpciones, preguntaId, valor);
+    if (!opcionId) {
       throw crearError(
         400,
         `La opcion "${valor}" no es valida para la pregunta ${preguntaId}.`
       );
     }
-    return { preguntaId, opcionId: opcion.id };
+    return { preguntaId, opcionId };
   });
 
   Encuesta.registrarRespuesta(id, participanteId, detalles);
