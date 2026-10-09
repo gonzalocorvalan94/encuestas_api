@@ -131,7 +131,6 @@ export const registrarRespuesta = (req, res) => {
     throw crearError(409, 'Este participante ya respondio la encuesta.');
   }
 
-  // Una sola consulta con todas las opciones de la encuesta
   const mapaOpciones = Encuesta.obtenerMapaOpciones(id);
 
   const detalles = respuestas.map(({ preguntaId, valor }) => {

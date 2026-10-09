@@ -122,7 +122,7 @@ export const obtenerMapaOpciones = (encuestaId) => {
   return mapa;
 };
 
-// Devuelve el id de la opción, o undefined si no pertenece a esa pregunta
+
 export const buscarOpcionId = (mapa, preguntaId, valor) =>
   mapa.get(claveOpcion(preguntaId, valor));
 
