@@ -2,11 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import encuestaRoutes from './src/routes/encuesta.routes.js';
 import { noEncontrada, manejarErrores } from './src/middlewares/errorHandler.js';
+import morgan from 'morgan';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
+app.use(morgan('dev'));
 app.use(express.json());
 app.use('/api/encuestas', encuestaRoutes);
 
