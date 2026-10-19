@@ -126,7 +126,7 @@ erDiagram
     RESPUESTA {
         int id PK
         int encuesta_id FK
-        text participante_id
+        int participante_id
         text fecha
     }
     DETALLE_RESPUESTA {
@@ -302,7 +302,7 @@ Registra las respuestas de un participante a la vez:
 
 ```json
 {
-  "participanteId": "anon-8f3a",
+  "participanteId": 42,
   "respuestas": [
     { "preguntaId": 1, "valor": "Bueno" },
     { "preguntaId": 2, "valor": "Si" }
@@ -352,7 +352,7 @@ Errores: `400`, `404`.
 | `enunciado` | Texto no vacío |
 | `opciones` | Lista de al menos 2 textos no vacíos y sin repetir (tras recortar espacios) |
 | `estado` (PATCH) | `publicada` o `cerrada` |
-| `participanteId` | Texto no vacío |
+| `participanteId` | Entero positivo |
 | `respuestas` | Lista no vacía de `{ preguntaId, valor }`; `preguntaId` entero y `valor` texto |
 
 Estas reglas se definen con [zod](https://zod.dev) en `src/schemas/encuesta.schema.js`. Además de validar, el schema recorta los espacios y descarta los campos desconocidos del cuerpo.
@@ -404,7 +404,7 @@ curl -X PATCH $BASE/1/estado -H "$JSON" -d '{"estado":"publicada"}'
 
 # 4. Responder (un participante por request)
 curl -X POST $BASE/1/respuestas -H "$JSON" \
-  -d '{"participanteId":"a1","respuestas":[{"preguntaId":1,"valor":"Si"},{"preguntaId":2,"valor":"Azul"}]}'
+  -d '{"participanteId": 101,"respuestas":[{"preguntaId":1,"valor":"Si"},{"preguntaId":2,"valor":"Azul"}]}'
 
 # 5. Consultar resultados
 curl $BASE/1/resultados

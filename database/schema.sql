@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS opcion (
 CREATE TABLE IF NOT EXISTS respuesta (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     encuesta_id INTEGER NOT NULL,
-    participante_id TEXT NOT NULL,
+    participante_id INTEGER NOT NULL,
     fecha TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
     UNIQUE (encuesta_id, participante_id),
     FOREIGN KEY (encuesta_id) REFERENCES encuesta(id) ON DELETE CASCADE

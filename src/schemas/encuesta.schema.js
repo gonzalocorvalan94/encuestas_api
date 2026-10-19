@@ -68,7 +68,7 @@ const itemRespuesta = objeto(
 );
 
 export const respuestaSchema = objeto({
-  participanteId: texto('El campo participanteId es obligatorio.'),
+  participanteId: entero('participanteId'),
   respuestas: z
     .array(itemRespuesta, { error: MENSAJE_LISTA })
     .min(1, MENSAJE_LISTA)
